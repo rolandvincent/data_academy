@@ -16,3 +16,13 @@
 .mw-lg-2{
     max-width: 90%;
 }
+
+.col-reverse-order{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.row-reverse-order{
+    display: flex;
+    flex-direction: row-reverse;
+}

@@ -17,13 +17,13 @@
         <a class="navbar-brand" href="#">Customer Segmentation</a>
         <ul class="navbar-nav me-auto mb-2 mb-sm-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="../">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Data</a>
+            <a class="nav-link" href="../data">Data</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Chart</a>
+            <a class="nav-link" href="../chart">Chart</a>
           </li>
         </ul>
       </div>
@@ -31,7 +31,7 @@
 
     <div class="container-fluid p-4">
       <div class="row p-4">
-        <div class="col mw-sm-3">
+        <div class="col-md-4">
           <div class="mb-3">
             <label for="gender" class="form-label">Gender</label>
             <select class="form-select" id="gender" name="gender">
@@ -47,6 +47,7 @@
               id="age"
               type="number"
               placeholder="Age"
+              onchange="updateGraph()"
             />
           </div>
           <div class="mb-3">
@@ -57,6 +58,7 @@
               id="income"
               type="number"
               placeholder="Income"
+              onchange="updateGraph()"
             />
           </div>
           <div class="mb-3">
@@ -67,6 +69,7 @@
               id="spending"
               type="number"
               placeholder="Spending Score"
+              onchange="updateGraph()"
             />
           </div>
           <div class="mb-3 d-grid gap-2">
@@ -75,11 +78,14 @@
             </button>
           </div>
         </div>
-        <div class="col">
+        <div class="col-md-8">
           <div>
             <canvas id="myChart"></canvas>
           </div>
         </div>
+      </div>
+      <div class="row p-4 justify-content-md-center">
+        <div id="liveAlertPlaceholder" class="col-reverse-order"></div>
       </div>
     </div>
 
@@ -91,6 +97,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       const ctx = document.getElementById("myChart");
+      const resultToast = document.getElementById("resultToast");
+      const toastMessage = document.getElementById("toastMessage");
+      const alertPlaceholder = document.getElementById("liveAlertPlaceholder");
+
+      var myChart = null;
+
+      const alert = (message, type) => {
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = [
+          `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+          `   <div>${message}</div>`,
+          '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+          "</div>",
+        ].join("");
+
+        alertPlaceholder.append(wrapper);
+      };
 
       function predict() {
         $("#time_group").text($("#opt_timeGroup").val());
@@ -103,32 +126,47 @@
             spending_score: $("#spending").val(),
           },
           function (data) {
-            <!-- var predicted = jQuery.parseJSON(data); -->
+            // <!-- var predicted = jQuery.parseJSON(data); -->
             console.log(data);
+            alert("Segment Category: " + data["legend"], "success");
           }
         );
       }
 
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-          datasets: [
-            {
-              label: "# of Votes",
-              data: [12, 19, 3, 5, 2, 3],
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true,
+      function updateGraph() {
+        if (myChart != null) {
+          myChart.destroy();
+        }
+
+        myChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ["Age", "Income", "Spending Score"],
+            datasets: [
+              {
+                label: "RFM Score",
+                data: [
+                  parseInt($("#age").val()),
+                  parseInt($("#income").val()),
+                  parseInt($("#spending").val()),
+                ],
+                backgroundColor: ["#F7A4A455", "#F49D1A55", "#A4BE7B55"],
+                borderColor: ["#F7A4A4", "#F49D1A", "#A4BE7B"],
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
             },
           },
-        },
-      });
+        });
+      }
+
+      updateGraph();
     </script>
   </body>
 </html>

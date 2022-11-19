@@ -11,14 +11,24 @@ def assets_path(path):
     return send_from_directory('assets', path)
 
 
-@app.route('/data/<path:path>')
-def data_path(path):
+@app.route('/files/<path:path>')
+def file_path(path):
     return send_from_directory('data', path)
 
 
 @app.route("/")
 def index():
     return render_template('index.html')
+
+
+@app.route("/data")
+def data_url():
+    return render_template('data.html')
+
+
+@app.route("/chart")
+def chart_url():
+    return render_template('chart.html')
 
 
 @app.route("/pred", methods=['POST'])

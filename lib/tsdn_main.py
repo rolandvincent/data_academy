@@ -20,10 +20,10 @@ import pickle
 
 class TSDN:
     def __init__(self) -> None:
-        self.scaler = pickle.load(open('data/scaler.pickle', 'rb'))
-        self.pca = pickle.load(open('data/pca.pickle', 'rb'))
+        self.scaler = pickle.load(open('files/scaler.pickle', 'rb'))
+        self.pca = pickle.load(open('files/pca.pickle', 'rb'))
         self.kmeans_pca = pickle.load(
-            open('data/kmeans_pca.pickle', 'rb'))
+            open('files/kmeans_pca.pickle', 'rb'))
 
     def predict_segment(self, data):
         x_scaled = self.scaler.transform(data)
@@ -37,7 +37,7 @@ class TSDN:
                   3: 'thrifty-spender-woman',
                   4: 'highly-spender-man'}
         predict_values['predict_segment'] = int(segm_kmeans_pcanew[0])
-        predict_values['Legend'] = legend[segm_kmeans_pcanew[0]]
+        predict_values['legend'] = legend[segm_kmeans_pcanew[0]]
         return predict_values
 
     def predict(self, gender, age, income, spending_score):
