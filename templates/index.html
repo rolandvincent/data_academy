@@ -73,8 +73,14 @@
             />
           </div>
           <div class="mb-3 d-grid gap-2">
-            <button class="btn btn-primary" onclick="sumbit()">
-              Segment Customer
+            <button class="btn btn-primary" id="sumbit" onclick="sumbit()">
+              <span
+                id="progressbar"
+                class="spinner-border spinner-border-sm visually-hidden"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span>Segment Customer</span>
             </button>
           </div>
         </div>
@@ -123,13 +129,15 @@
       const alertPlaceholder = document.getElementById("liveAlertPlaceholder");
       const errorToast = document.getElementById("errorToast");
       const errorMessage = document.getElementById("errorMessage");
+      const progress = document.getElementById("progressbar");
+      const sumbitBtn = document.getElementById("sumbit");
 
       var myChart = null;
 
       const alert = (message, type) => {
         const wrapper = document.createElement("div");
         wrapper.innerHTML = [
-          `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+          `<div class="alert alert-${type} alert-dismissible fade show" role="alert">`,
           `   <div>${message}</div>`,
           '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
           "</div>",
@@ -151,6 +159,9 @@
           return;
         }
 
+        sumbitBtn.disabled = true;
+        progress.classList.remove("visually-hidden");
+
         $.post(
           "/pred",
           {
@@ -162,6 +173,10 @@
           function (data) {
             // <!-- var predicted = jQuery.parseJSON(data); -->
             console.log(data);
+
+            sumbitBtn.disabled = false;
+            progress.classList.add("visually-hidden");
+
             alert("Segment Category: " + data["legend"], "success");
           }
         );
@@ -178,7 +193,7 @@
             labels: ["Age", "Income", "Spending Score"],
             datasets: [
               {
-                label: "RFM Score",
+                label: "Value",
                 data: [
                   parseInt($("#age").val()),
                   parseInt($("#income").val()),

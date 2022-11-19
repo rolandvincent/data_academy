@@ -1,6 +1,8 @@
 from flask import Flask, request, abort, render_template, send_from_directory, jsonify
 from lib.helper import *
 from lib.tsdn_main import TSDN
+import pandas as pd
+import json
 
 app = Flask(__name__)
 tsdn = TSDN()
@@ -21,9 +23,18 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/data")
+@app.route("/data", methods=['GET'])
 def data_url():
-    return render_template('data.html')
+    data = request.args.to_dict()
+    if (len(data.items()) > 0):
+        if (data.get('query', None) == 'dataset'):
+            dataset = pd.read_csv('files/Mall_Customers.csv', index_col=0)
+            # dataset['Gender'] = dataset['Gender'].apply(
+            #     lambda x:  0 if x == 'Male' else 1)
+            return json.dumps(dataFrameToArray(dataset), cls=NpEncoder)
+        return {}
+    else:
+        return render_template('data.html')
 
 
 @app.route("/chart")

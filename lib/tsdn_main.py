@@ -31,11 +31,11 @@ class TSDN:
 
         segm_kmeans_pcanew = self.kmeans_pca.predict(x_pca)
         predict_values = dict()
-        legend = {0: 'highly-spender-woman-hgi',
-                  1: 'thrifty-spender-man',
-                  2: 'highly-spender-woman-lwi',
-                  3: 'thrifty-spender-woman',
-                  4: 'highly-spender-man'}
+        legend = {0: 'Spender-Agressive 2',  # 'highly-spender-woman-hgi',
+                  1: 'Thrifty-Spender',  # 'thrifty-spender-man',
+                  2: 'Spender-Agressive 1',  # 'highly-spender-woman-lwi',
+                  3: 'Thrifty-Spender',  # 'thrifty-spender-woman',
+                  4: 'Spender-Agressive 1'}  # 'highly-spender-man'}
         predict_values['predict_segment'] = int(segm_kmeans_pcanew[0])
         predict_values['legend'] = legend[segm_kmeans_pcanew[0]]
         return predict_values
