@@ -40,27 +40,27 @@ class TSDN:
             0: [
                 "Customer ini mengcover 18.5% dari total populasi customer.",
                 "High income dan spending score",
-                "Memiliki rasio spending dan Income 79.01%"
+                "Memiliki rasio spending dan Income rata-rata 79.01%"
             ],
             1: [
                 "Customer yang umum, mengcover 24% dari total populasi customer.",
                 "Standard income dan spending score",
-                "Memiliki rasio spending dan Income 46.7%"
+                "Memiliki rasio spending dan Income rata-rata 46.7%"
             ],
             2: [
                 "Customer yang paling langka, mengcover 12.5% dari total populasi customer.",
                 "Low income dan low spending score",
-                "Memiliki rasio spending dan Income 49.2%"
+                "Memiliki rasio spending dan Income rata-rata 49.2%"
             ],
             3: [
                 "Customer yang paling umum, mengcover 25% dari total populasi customer.",
                 "Standard income dan spending score",
-                "Memiliki rasio spending dan Income 62.5%"
+                "Memiliki rasio spending dan Income rata-rata 62.5%"
             ],
             4: [
                 "Customer ini mengcover 20% dari total populasi customer.",
                 "High income dan spending score",
-                "Memiliki Rasio spending dan Income 114%"
+                "Memiliki Rasio spending dan Income rata-rata 114%"
             ]}
         predict_values['predict_segment'] = int(segm_kmeans_pcanew[0])
         predict_values['legend'] = legend[segm_kmeans_pcanew[0]]

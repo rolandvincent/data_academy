@@ -29,7 +29,9 @@
       </div>
     </nav>
 
-    <div class="container-fluid p-4"></div>
+    <div class="container-fluid p-4">
+      <canvas id="myChart"></canvas>
+    </div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
@@ -41,37 +43,62 @@
       const ctx = document.getElementById("myChart");
       var myChart = null;
 
-      function updateGraph() {
+      async function updateGraph() {
         if (myChart != null) {
           myChart.destroy();
         }
 
-        myChart = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: ["Age", "Income", "Spending Score"],
-            datasets: [
-              {
-                label: "RFM Score",
-                data: [
-                  parseInt($("#age").val()),
-                  parseInt($("#income").val()),
-                  parseInt($("#spending").val()),
-                ],
-                backgroundColor: ["#F7A4A455", "#F49D1A55", "#A4BE7B55"],
-                borderColor: ["#F7A4A4", "#F49D1A", "#A4BE7B"],
-                borderWidth: 2,
+        colorPalette = ["#F7A4A4", "#F49D1A", "#A4BE7B", "#863A6F", "#0D4C92"];
+        legend = [
+          "Prosperous Customer",
+          "Standard Customer",
+          "Rare Customer",
+          "Active Customer",
+          "Top Customer",
+        ];
+
+        let response = await fetch("../data?query=statistic");
+
+        if (response.ok) {
+          let data = await response.json();
+
+          myChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: legend,
+              datasets: [
+                {
+                  label: "Total",
+                  data: [data[0], data[1], data[2], data[3], data[4]],
+                  backgroundColor: [
+                    "#F7A4A455",
+                    "#F49D1A55",
+                    "#A4BE7B55",
+                    "#863A6F55",
+                    "#0D4C9255",
+                  ],
+                  borderColor: colorPalette,
+                  borderWidth: 2,
+                },
+              ],
+            },
+            options: {
+              indexAxis: "y",
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                },
               },
-            ],
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true,
+              plugins: {
+                legend: {
+                  position: "right",
+                  display: false,
+                },
               },
             },
-          },
-        });
+          });
+        }
       }
 
       updateGraph();

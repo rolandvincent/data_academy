@@ -43,6 +43,20 @@ def data_url():
             graph_data['Segment'] = dataset['Segment K-means PCA']
 
             return json.dumps(dataFrameToArray(graph_data), cls=NpEncoder)
+        if (data.get('query', None) == 'statistic'):
+            dataset = pd.read_csv('files/segm_pca.csv', index_col=0)
+
+            stat = {
+                0: dataset['Segment K-means PCA'].value_counts()[0],
+                1: dataset['Segment K-means PCA'].value_counts()[1],
+                2: dataset['Segment K-means PCA'].value_counts()[2],
+                3: dataset['Segment K-means PCA'].value_counts()[3],
+                4: dataset['Segment K-means PCA'].value_counts()[4],
+            }
+
+            print(stat)
+
+            return json.dumps(stat, cls=NpEncoder)
         return {}
     else:
         return render_template('data.html')

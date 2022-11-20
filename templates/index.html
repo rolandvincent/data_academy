@@ -51,13 +51,19 @@
           </div>
           <div class="mb-3">
             <label for="income" class="form-label">Income </label>
-            <input
-              class="form-control"
-              name="income"
-              id="income"
-              type="number"
-              placeholder="Income"
-            />
+            <div class="input-group mb-3">
+              <span class="input-group-text">$</span>
+              <input
+                class="form-control"
+                name="income"
+                id="income"
+                type="number"
+                placeholder="Income"
+                type="text"
+                aria-label="Amount (to the nearest dollar)"
+              />
+              <span class="input-group-text">,000.00</span>
+            </div>
           </div>
           <div class="mb-3">
             <label for="spending" class="form-label">Spending Score </label>
@@ -67,6 +73,8 @@
               id="spending"
               type="number"
               placeholder="Spending Score"
+              max="100"
+              min="1"
             />
           </div>
           <div class="mb-3 d-grid gap-2">
