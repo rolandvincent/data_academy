@@ -47,6 +47,7 @@
               id="age"
               type="number"
               placeholder="Age"
+              min="0"
             />
           </div>
           <div class="mb-3">
@@ -61,6 +62,7 @@
                 placeholder="Income"
                 type="text"
                 aria-label="Amount (to the nearest dollar)"
+                min="0"
               />
               <span class="input-group-text">,000.00</span>
             </div>
@@ -109,7 +111,7 @@
         aria-atomic="true"
       >
         <div class="toast-header">
-          <strong class="me-auto">Error</strong>
+          <strong class="me-auto txt-fg-error">Error</strong>
           <button
             type="button"
             class="btn-close"
@@ -168,6 +170,7 @@
           "</div>",
         ].join("");
 
+        alertPlaceholder.innerHTML = "";
         alertPlaceholder.append(wrapper);
       };
 
@@ -180,6 +183,30 @@
         if (!gender | !age | !income | !spending_score) {
           const toast = new bootstrap.Toast(errorToast);
           errorMessage.innerHTML = "Please fill all blanks";
+          toast.show();
+          return;
+        }
+
+        if (age < 0) {
+          const toast = new bootstrap.Toast(errorToast);
+          errorMessage.innerHTML =
+            "Invalid Age Value<br>Value must be above or equal to zero.";
+          toast.show();
+          return;
+        }
+
+        if (income < 0) {
+          const toast = new bootstrap.Toast(errorToast);
+          errorMessage.innerHTML =
+            "Invalid Income Value<br>Value must be above or equal to zero.";
+          toast.show();
+          return;
+        }
+
+        if (spending_score < 0 || spending_score > 100) {
+          const toast = new bootstrap.Toast(errorToast);
+          errorMessage.innerHTML =
+            "Invalid Spending Score Value<br>Values must between 1 and 100";
           toast.show();
           return;
         }

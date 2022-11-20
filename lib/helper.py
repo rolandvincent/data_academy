@@ -29,7 +29,7 @@ class NpEncoder(json.JSONEncoder):
 def dataFrameToArray(dataFrame: dict):
     totalRow = len(dataFrame.get(dataFrame.keys()[0]).keys())
     tmp = list()
-    for i in range(1, totalRow):
+    for i in range(1, totalRow + 1):
         row = list()
         for key in dataFrame.keys():
             row.append(dataFrame.get(key).get(i))
