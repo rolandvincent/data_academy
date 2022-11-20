@@ -47,7 +47,6 @@
               id="age"
               type="number"
               placeholder="Age"
-              onchange="updateGraph()"
             />
           </div>
           <div class="mb-3">
@@ -58,7 +57,6 @@
               id="income"
               type="number"
               placeholder="Income"
-              onchange="updateGraph()"
             />
           </div>
           <div class="mb-3">
@@ -69,7 +67,6 @@
               id="spending"
               type="number"
               placeholder="Spending Score"
-              onchange="updateGraph()"
             />
           </div>
           <div class="mb-3 d-grid gap-2">
@@ -134,12 +131,32 @@
 
       var myChart = null;
 
-      const alert = (message, type) => {
+      const addInfo = (segment, legend, descriptions, type) => {
         const wrapper = document.createElement("div");
+        let description = "<ul>";
+        for (let i = 0; i < descriptions.length; i++) {
+          description += "<li>" + descriptions[i] + "</li>";
+        }
+        description += "</ul>";
+
+        imgSource = "../assets/img/StandardCustomer.png";
+        if (segment == 0) imgSource = "../assets/img/ProsperousCustomer.png";
+        else if (segment == 2) imgSource = "../assets/img/RareCustomer.png";
+        else if (segment == 3) imgSource = "../assets/img/ActiveCustomer.png";
+        else if (segment == 4) imgSource = "../assets/img/TopCustomer.png";
+
         wrapper.innerHTML = [
           `<div class="alert alert-${type} alert-dismissible fade show" role="alert">`,
-          `   <div>${message}</div>`,
-          '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+          ` <div class="row"> `,
+          `   <div class="col-auto">`,
+          `     <img class="thumb-customer" src="${imgSource}" />`,
+          `   </div>`,
+          `   <div class="col">`,
+          `     <h3>${legend}</h3>`,
+          `     <div>${description}</div>`,
+          `   </div>`,
+          ` </div>`,
+          `   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`,
           "</div>",
         ].join("");
 
@@ -177,42 +194,110 @@
             sumbitBtn.disabled = false;
             progress.classList.add("visually-hidden");
 
-            alert("Segment Category: " + data["legend"], "success");
+            addInfo(
+              data["predict_segment"],
+              data["legend"],
+              data["description"],
+              "success"
+            );
           }
         );
       }
 
-      function updateGraph() {
+      async function updateGraph() {
         if (myChart != null) {
           myChart.destroy();
         }
 
-        myChart = new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: ["Age", "Income", "Spending Score"],
-            datasets: [
-              {
-                label: "Value",
-                data: [
-                  parseInt($("#age").val()),
-                  parseInt($("#income").val()),
-                  parseInt($("#spending").val()),
-                ],
-                backgroundColor: ["#F7A4A455", "#F49D1A55", "#A4BE7B55"],
-                borderColor: ["#F7A4A4", "#F49D1A", "#A4BE7B"],
-                borderWidth: 2,
-              },
-            ],
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true,
+        let response = await fetch("../data?query=graph");
+        colorPalette = ["#F7A4A4", "#F49D1A", "#A4BE7B", "#863A6F", "#0D4C92"];
+        legend = [
+          "Prosperous Customer",
+          "Standard Customer",
+          "Rare Customer",
+          "Active Customer",
+          "Top Customer",
+        ];
+
+        if (response.ok) {
+          let data = await response.json();
+          let graph0 = [];
+          let graph1 = [];
+          let graph2 = [];
+          let graph3 = [];
+          let graph4 = [];
+          for (let i = 0; i < data.length; i++) {
+            if (data[i][2] == 0) graph0.push([data[i][0], data[i][1]]);
+          }
+          for (let i = 0; i < data.length; i++) {
+            if (data[i][2] == 1) graph1.push([data[i][0], data[i][1]]);
+          }
+          for (let i = 0; i < data.length; i++) {
+            if (data[i][2] == 2) graph2.push([data[i][0], data[i][1]]);
+          }
+          for (let i = 0; i < data.length; i++) {
+            if (data[i][2] == 3) graph3.push([data[i][0], data[i][1]]);
+          }
+          for (let i = 0; i < data.length; i++) {
+            if (data[i][2] == 4) graph4.push([data[i][0], data[i][1]]);
+          }
+
+          data = null;
+
+          //let data = jQuery.parseJSON(json);
+          myChart = new Chart(ctx, {
+            type: "scatter",
+            data: {
+              datasets: [
+                {
+                  label: legend[0],
+                  data: graph0,
+                  backgroundColor: colorPalette[0],
+                },
+                {
+                  label: legend[1],
+                  data: graph1,
+                  backgroundColor: colorPalette[1],
+                },
+                {
+                  label: legend[2],
+                  data: graph2,
+                  backgroundColor: colorPalette[2],
+                },
+                {
+                  label: legend[3],
+                  data: graph3,
+                  backgroundColor: colorPalette[3],
+                },
+                {
+                  label: legend[4],
+                  data: graph4,
+                  backgroundColor: colorPalette[4],
+                },
+              ],
+            },
+            options: {
+              scales: {
+                x: {
+                  type: "linear",
+                  position: "bottom",
+                  title: {
+                    display: true,
+                    text: "Component 3",
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Component 2",
+                  },
+                },
               },
             },
-          },
-        });
+          });
+        } else {
+          alert("HTTP-Error: " + response.status);
+        }
       }
 
       updateGraph();

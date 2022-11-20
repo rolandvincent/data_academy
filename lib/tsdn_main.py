@@ -31,13 +31,40 @@ class TSDN:
 
         segm_kmeans_pcanew = self.kmeans_pca.predict(x_pca)
         predict_values = dict()
-        legend = {0: 'Spender-Agressive 2',  # 'highly-spender-woman-hgi',
-                  1: 'Thrifty-Spender',  # 'thrifty-spender-man',
-                  2: 'Spender-Agressive 1',  # 'highly-spender-woman-lwi',
-                  3: 'Thrifty-Spender',  # 'thrifty-spender-woman',
-                  4: 'Spender-Agressive 1'}  # 'highly-spender-man'}
+        legend = {0: 'Prosperous Customer',  # 'highly-spender-woman-hgi',
+                  1: 'Standard Customer',  # 'thrifty-spender-man',
+                  2: 'Rare Customer',  # 'highly-spender-woman-lwi',
+                  3: 'Active Customer',  # 'thrifty-spender-woman',
+                  4: 'Top Customer'}  # 'highly-spender-man'}
+        description = {
+            0: [
+                "Customer ini mengcover 18.5% dari total populasi customer.",
+                "High income dan spending score",
+                "Memiliki rasio spending dan Income 79.01%"
+            ],
+            1: [
+                "Customer yang umum, mengcover 24% dari total populasi customer.",
+                "Standard income dan spending score",
+                "Memiliki rasio spending dan Income 46.7%"
+            ],
+            2: [
+                "Customer yang paling langka, mengcover 12.5% dari total populasi customer.",
+                "Low income dan low spending score",
+                "Memiliki rasio spending dan Income 49.2%"
+            ],
+            3: [
+                "Customer yang paling umum, mengcover 25% dari total populasi customer.",
+                "Standard income dan spending score",
+                "Memiliki rasio spending dan Income 62.5%"
+            ],
+            4: [
+                "Customer ini mengcover 20% dari total populasi customer.",
+                "High income dan spending score",
+                "Memiliki Rasio spending dan Income 114%"
+            ]}
         predict_values['predict_segment'] = int(segm_kmeans_pcanew[0])
         predict_values['legend'] = legend[segm_kmeans_pcanew[0]]
+        predict_values['description'] = description[segm_kmeans_pcanew[0]]
         return predict_values
 
     def predict(self, gender, age, income, spending_score):

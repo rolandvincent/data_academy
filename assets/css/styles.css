@@ -26,3 +26,9 @@
     display: flex;
     flex-direction: row-reverse;
 }
+
+.thumb-customer{
+    width: 120px; 
+    height: 140px; 
+    object-fit: cover;
+}
