@@ -98,7 +98,7 @@
         </div>
       </div>
       <div class="row p-4 justify-content-md-center">
-        <div id="liveAlertPlaceholder" class="col-reverse-order"></div>
+        <div id="DetailPlaceholder" class="col-reverse-order"></div>
       </div>
     </div>
 
@@ -133,7 +133,7 @@
       const ctx = document.getElementById("myChart");
       const resultToast = document.getElementById("resultToast");
       const toastMessage = document.getElementById("toastMessage");
-      const alertPlaceholder = document.getElementById("liveAlertPlaceholder");
+      const alertPlaceholder = document.getElementById("DetailPlaceholder");
       const errorToast = document.getElementById("errorToast");
       const errorMessage = document.getElementById("errorMessage");
       const progress = document.getElementById("progressbar");
@@ -235,6 +235,7 @@
               data["description"],
               "success"
             );
+            alertPlaceholder.scrollIntoView();
           }
         );
       }
@@ -338,17 +339,6 @@
       }
 
       updateGraph();
-
-      window.addEventListener("beforeprint", () => {
-        myChart.resize(600, 600);
-      });
-      window.addEventListener("afterprint", () => {
-        myChart.resize();
-      });
-
-      //myChart.addEventListener("onResize", () => {
-      //  if (myChart.)
-      //});
     </script>
   </body>
 </html>
