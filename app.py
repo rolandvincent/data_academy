@@ -51,7 +51,7 @@ def data_url():
                 1: dataset['Segment K-means PCA'].value_counts()[1],
                 2: dataset['Segment K-means PCA'].value_counts()[2],
                 3: dataset['Segment K-means PCA'].value_counts()[3],
-                4: dataset['Segment K-means PCA'].value_counts()[4],
+                # 4: dataset['Segment K-means PCA'].value_counts()[4],
             }
 
             print(stat)

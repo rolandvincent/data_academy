@@ -150,10 +150,9 @@
         description += "</ul>";
 
         imgSource = "../assets/img/StandardCustomer.png";
-        if (segment == 0) imgSource = "../assets/img/ProsperousCustomer.png";
-        else if (segment == 2) imgSource = "../assets/img/RareCustomer.png";
+        if (segment == 0) imgSource = "../assets/img/WiseCustomer.png";
+        else if (segment == 2) imgSource = "../assets/img/LoyalCustomer.png";
         else if (segment == 3) imgSource = "../assets/img/ActiveCustomer.png";
-        else if (segment == 4) imgSource = "../assets/img/TopCustomer.png";
 
         wrapper.innerHTML = [
           `<div class="alert alert-${type} alert-dismissible fade show" role="alert">`,
@@ -248,11 +247,10 @@
         let response = await fetch("../data?query=graph");
         colorPalette = ["#F7A4A4", "#F49D1A", "#A4BE7B", "#863A6F", "#0D4C92"];
         legend = [
-          "Prosperous Customer",
+          "Wise Customer",
           "Standard Customer",
-          "Rare Customer",
+          "Loyal Customer",
           "Active Customer",
-          "Top Customer",
         ];
 
         if (response.ok) {
@@ -305,11 +303,11 @@
                   data: graph3,
                   backgroundColor: colorPalette[3],
                 },
-                {
-                  label: legend[4],
-                  data: graph4,
-                  backgroundColor: colorPalette[4],
-                },
+                //                {
+                //                  label: legend[4],
+                //                  data: graph4,
+                //                  backgroundColor: colorPalette[4],
+                //                },
               ],
             },
             options: {
